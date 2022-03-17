@@ -1,0 +1,11 @@
+version: '3.3'
+
+services:
+  backend:
+    build: .
+    container_name: app
+    restart: always
+    ports:
+      - 5279:5279
+      - 80:80
+      - 8080:8080

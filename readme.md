@@ -21,7 +21,7 @@ The C++ TCP Proxy server implementation is compatible with the following C++
 compilers:
 
 * GNU Compiler Collection (4.1+)
-* Intel® C++ Compiler (9.x+)
+* Intelï¿½ C++ Compiler (9.x+)
 * Clang/LLVM (1.1+)
 * PGI C++ (10.x+)
 * Microsoft Visual Studio C++ Compiler (8.1+)
@@ -130,3 +130,9 @@ connection. This includes releasing any outstanding asynchronous requests,
 culminating in the reference count of the bridge (client session) reaching zero
 at which point the bridge instance itself will subsequently have its destructor
 called.
+
+# backend
+
+docker build -t backend .
+
+docker run -it -d -p 5279:5279 --name proxy backend  

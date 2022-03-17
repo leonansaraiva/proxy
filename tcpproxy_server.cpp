@@ -109,7 +109,7 @@ namespace tcp_proxy
                       shared_from_this(),
                       boost::asio::placeholders::error,
                       boost::asio::placeholders::bytes_transferred));
-
+            // std::cout << upstream_data_ << std::endl;
             // Setup async read from client (downstream)
             downstream_socket_.async_read_some(
                  boost::asio::buffer(downstream_data_,max_data_length),
@@ -174,8 +174,17 @@ namespace tcp_proxy
       {
          if (!error)
          {
+
+            boost::asio::const_buffer const&  buffer = boost::asio::buffer(downstream_data_,bytes_transferred);
+            // auto first =  boost::asio::buffer_cast<const char*>(buffer);
+            // auto last = first +  boost::asio::buffer_size(buffer);
+            // std::cout << first <<std::endl;
+            // std::cout << *first <<std::endl;
+            // std::copy(first, last, std::ostream_iterator<char>(std::cout));
+            // std::cout << std::endl;
+
             async_write(upstream_socket_,
-                  boost::asio::buffer(downstream_data_,bytes_transferred),
+                  buffer,
                   boost::bind(&bridge::handle_upstream_write,
                         shared_from_this(),
                         boost::asio::placeholders::error));
@@ -246,6 +255,8 @@ namespace tcp_proxy
             try
             {
                session_ = boost::shared_ptr<bridge>(new bridge(io_service_));
+
+               // std::string sClientIp = session_->downstream_socket().remote_endpoint().address().to_string();
 
                acceptor_.async_accept(session_->downstream_socket(),
                     boost::bind(&acceptor::handle_accept,
